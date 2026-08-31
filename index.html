@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ARCTIX — index.html  v5
+     ───────────────────────────────────────────────────────────────────
+     INDEX
+     ─────
+     HEAD
+       01 · Charset & Viewport
+       02 · SEO & Theme Meta
+       03 · Title & Stylesheet
+
+     BODY
+       § 1  Start Screen
+       § 2  Name Screen
+       § 3  Chat Screen
+              3.1  Side Panel  (LEFT — history + settings + user)
+                     3.1a  Header (brand + close)
+                     3.1b  Conversation list
+                     3.1c  Settings section (moved here from top bar)
+                     3.1d  User footer
+              3.2  Side Backdrop
+              3.3  Top Bar
+                     3.3a  Left: ☰ hamburger + ❄ Arctix
+                     3.3b  Right: Clear + ✎ New Chat
+              3.4  Chat Log
+              3.5  Input Area
+       § 4  Script
+     ═══════════════════════════════════════════════════════════════════ -->
+
+<head>
+
+  <!-- 01 · Charset & Viewport -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 02 · SEO & Theme Meta -->
+  <meta name="description" content="Arctix — Precision over noise." />
+  <meta name="theme-color" content="#f5f0eb" />
+
+  <!-- 03 · Title & Stylesheet -->
+  <title>Arctix</title>
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+     § 1 · START SCREEN
+     ═══════════════════════════════════════════════════════════════════ -->
+  <div id="startScreen" class="screen" aria-label="Welcome to Arctix">
+    <div class="center-box">
+      <span id="snowStart" class="snowflake" aria-hidden="true">❄</span>
+      <h1 class="brand">Arctix</h1>
+      <p class="tagline">Precision over noise.</p>
+      <button id="startBtn" class="btn-primary glass-btn" type="button">Enter</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+     § 2 · NAME SCREEN
+     ═══════════════════════════════════════════════════════════════════ -->
+  <div id="nameScreen" class="screen hidden" aria-label="Enter your name">
+    <div class="center-box">
+      <span id="snowName" class="snowflake snowflake--sm" aria-hidden="true">❄</span>
+      <h1 class="brand brand--sm">Arctix</h1>
+      <div class="name-wrap">
+        <input id="nameInput" type="text" placeholder="Your name" autocomplete="off" autocapitalize="words" spellcheck="false" maxlength="32" aria-label="Enter your name" aria-required="true" />
+        <button id="continueBtn" class="btn-primary glass-btn" type="button">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+     § 3 · CHAT SCREEN
+     ═══════════════════════════════════════════════════════════════════ -->
+  <div id="chatScreen" class="screen chat-app hidden">
+
+    <!-- ───────────────────────────────────────────────────────────────
+       3.1 · SIDE PANEL  (LEFT — conversation history + settings + user)
+       Opens via ☰ in top bar. Contains everything that used to be in
+       the separate settings drawer, plus full conversation history.
+    ─────────────────────────────────────────────────────────────────── -->
+    <aside id="sidePanel" class="side-panel hidden" role="dialog" aria-label="Conversations and settings" aria-modal="true">
+
+      <!-- 3.1a · Header: brand + close -->
+      <div class="side-header">
+        <span class="side-brand">
+          <span class="side-brand__snow" aria-hidden="true">❄</span>
+          Arctix
+        </span>
+        <button id="sideClose" class="side-close-btn" type="button" aria-label="Close sidebar">✕</button>
+      </div>
+
+      <!-- 3.1b · Conversation list (JS-rendered, grouped by date) -->
+      <div class="side-conv-scroll">
+        <div id="convList" class="side-conv-list" role="list" aria-label="Past conversations">
+          <!-- JS populates: .conv-group labels + .conv-item entries -->
+        </div>
+      </div>
+
+      <!-- 3.1c · Settings section (moved here from former gear-icon panel) -->
+      <div class="side-settings">
+        <p class="side-section-label">Settings</p>
+
+        <!-- Dark mode toggle -->
+        <div class="side-setting-row">
+          <div class="side-setting-info">
+            <span class="side-setting-icon" aria-hidden="true">🌙</span>
+            <div class="side-setting-text">
+              <span class="side-setting-name">Dark mode</span>
+              <span class="side-setting-desc">Switch to a darker look</span>
+            </div>
+          </div>
+          <button id="themeBtn" class="toggle-switch" type="button" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+            <span class="toggle-thumb"></span>
+          </button>
+        </div>
+
+        <!-- Sound toggle -->
+        <div class="side-setting-row">
+          <div class="side-setting-info">
+            <span class="side-setting-icon" aria-hidden="true">🔊</span>
+            <div class="side-setting-text">
+              <span class="side-setting-name">Sound</span>
+              <span class="side-setting-desc">Subtle typing sound</span>
+            </div>
+          </div>
+          <button id="soundBtn" class="toggle-switch" type="button" role="switch" aria-checked="true" aria-label="Toggle sound">
+            <span class="toggle-thumb"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3.1d · User footer -->
+      <div class="side-footer">
+        <div class="side-user">
+          <div class="side-user__avatar" aria-hidden="true">
+            <span id="sideUserInitial">A</span>
+          </div>
+          <span id="sideUserName" class="side-user__name">User</span>
+        </div>
+      </div>
+
+    </aside><!-- /#sidePanel -->
+
+    <!-- ───────────────────────────────────────────────────────────────
+       3.2 · SIDE BACKDROP
+       Click-away overlay; closes the side panel.
+    ─────────────────────────────────────────────────────────────────── -->
+    <div id="sideBackdrop" class="side-backdrop hidden" aria-hidden="true"></div>
+
+    <!-- ───────────────────────────────────────────────────────────────
+       3.3 · TOP BAR
+       Left  : ☰ hamburger (opens side panel) + ❄ Arctix brand
+       Right : Clear pill + ✎ New Chat icon  (replaces old ⚙ settings)
+    ─────────────────────────────────────────────────────────────────── -->
+    <header class="top-bar">
+
+      <!-- 3.3a · Left group -->
+      <div class="top-bar__left">
+        <button id="sideBtn" class="btn-icon glass-btn" type="button" aria-label="Open conversations" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8h16" />
+            <path d="M4 16h10" />
+          </svg>
+        </button>
+
+        <span class="top-bar__title" aria-label="Arctix">
+          <span class="top-bar__snow" aria-hidden="true">❄</span>
+          Arctix
+        </span>
+      </div>
+
+      <!-- 3.3b · Right group -->
+      <div class="top-bar__right">
+        <button id="clearBtn" class="btn-clear glass-btn" type="button" aria-label="Clear chat">Clear</button>
+        <!-- ✎ New Chat — replaces the old ⚙ settings gear -->
+        <button id="newChatBtn" class="btn-icon glass-btn" type="button" aria-label="New chat">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+            <path d="M8 12h8" />
+            <path d="M12 8v8" />
+          </svg>
+        </button>
+      </div>
+
+    </header><!-- /.top-bar -->
+
+    <!-- ───────────────────────────────────────────────────────────────
+       3.4 · CHAT LOG
+       Scrollable message area — user (right) + bot (left) bubbles.
+  ─────────────────────────────────────────────────────────────────── -->
+    <main class="chat-wrap" aria-label="Conversation">
+      <div id="chat" class="chat" role="log" aria-live="polite" aria-label="Chat messages" aria-relevant="additions"></div>
+    </main>
+
+    <!-- ───────────────────────────────────────────────────────────────
+       3.5 · INPUT AREA  (fixed bottom)
+  ─────────────────────────────────────────────────────────────────── -->
+    <footer class="input-area">
+      <div class="input-wrapper">
+        <input id="userInput" type="text" placeholder="Message Arctix..." autocomplete="off" autocapitalize="sentences" spellcheck="false" maxlength="500" aria-label="Type a message" />
+        <button id="sendBtn" class="btn-send glass-btn" type="button" aria-label="Send message">&#10148;</button>
+      </div>
+    </footer>
+
+  </div><!-- /#chatScreen -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+     § 4 · SCRIPT
+     Loaded last — all referenced DOM elements exist at parse time.
+     ═══════════════════════════════════════════════════════════════════ -->
+  <script src="script.js"></script>
+
+</body>
+
+</html>
